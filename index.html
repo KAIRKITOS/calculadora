@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Calculadora Premium</title>
+
+<style>
+/* === estilos de como se ve la mayoria === */
+body {
+  font-family: system-ui, sans-serif;
+  background: #0f1724;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+.calc {
+  width: 320px;
+  background: #1a2335;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+.result-box {
+  background: #60a5fa;
+  color: #0b1220;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 1.2rem;
+  display: none;
+  margin-bottom: 8px;
+  white-space: pre-line;
+}
+.display {
+  background: #0b1220;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  text-align: right;
+  font-size: 1.6rem;
+}
+.pad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+button {
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #28354d;
+  color: white;
+  cursor: pointer;
+}
+button:active { transform: scale(.97); }
+.op { background: #4b6cb7; }
+.eq { background: #60a5fa; color: #0b1220; font-weight: bold; }
+.restart { background: #22c55e; display: none; }
+.sqrt { background: #f97316; display: none; }
+
+/* === modal y toast, en si es como se va a ver la pantalla emergente (modal) y los mensajes motivacionales (toast) === */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  background: #fff;
+  color: #111;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  width: 280px;
+}
+.modal button {
+  margin: 8px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-pay { background: #3b82f6; color: white; }
+.btn-cancel { background: #ccc; }
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: none;
+  font-weight: bold;
+}
+</style>
+</head>
