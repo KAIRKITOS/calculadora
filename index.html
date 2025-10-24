@@ -252,7 +252,22 @@ btnPay.onclick = () => {
   sqrtBtn.style.display = "inline-block";
   startMotivation();
   
-
+  try {
+    let toEval = expr.replace(/√/g,"Math.sqrt");
+    const res = Function('"use strict";return (' + toEval + ')')();
+    resultBox.textContent = "Hola mundo";
+    resultBox.style.display = "block";
+    setTimeout(()=>{
+      resultBox.textContent = "" + res;
+      expr = res.toString();
+    }, 500);
+    showToast("Ahora eres premium. Sigue desbloqueando funciones!");
+  } catch {
+    resultBox.textContent = "Hola mundo\nError en operación";
+    resultBox.style.display = "block";
+    expr = "";
+  }
+};
 </script>
 
 </body>
