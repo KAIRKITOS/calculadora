@@ -140,4 +140,38 @@ button:active { transform: scale(.97); }
           </div>
           /*La pantalla emergente, modal es eso. Los botones son esos del cancelar y pagar, lo que permite moverte a otro*/
           <div class="toast" id="toast"></div>
+          <script>
+const toast = document.getElementById("toast");
+
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.style.display = "block";
+  setTimeout(() => toast.style.display = "none", 2500);
+}
+
+let motivationInterval;
+function startMotivation() {
+  const msgs = [
+    "OMG, eres increible",
+    "Sigue desbloqueando funciones",
+    "Se mucho mejor que todos con esta calculadora, no seas del monton",
+    "Increible, ¿Verdad?, no cualquier calculadora te daría esto",
+    "Si pagas 1500 se desbloquea la opcion de potencia.",
+    "Por favor apóyanos para seguir mejorando",
+    "compra funciones sherk ,compra funciones",
+    "andale compra mas funciones o ya se te acobotu quincena",
+    "jajajajja no le alcansa pa nuestra calculadora",
+    "compra mas nuestra cartera esta tan vcia que hasta las polillas se mudaron",
+    "si falla reinicia o culpa al cache",
+    "ashh saquenlo mo le alcansa ni pal chicle y quiere usar nuestra calculadora",
+    "Tenemos hambre, alimentanos..."
+  ];
+  motivationInterval = setInterval(() => {
+    const msg = msgs[Math.floor(Math.random() * msgs.length)];
+    showToast(msg);
+  }, 8000);
+}
+
+</script>
           
