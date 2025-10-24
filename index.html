@@ -104,3 +104,40 @@ button:active { transform: scale(.97); }
 }
 </style>
 </head>
+<body>
+  <div class="calc">
+    <div class="result-box" id="resultBox"></div>
+    <div class="display" id="display">0</div>
+    <div class="pad">
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="op"></button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button class="op">*</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="op">-</button>
+      <button>0</button>
+      <button>.</button>
+      <button class="eq">=</button>
+      <button class="op">+</button>
+      <button class="sqrt">√</button>
+      <button class="restart">Reiniciar</button>
+      </div>
+      </div>
+      /*Todo esto sirve como los botones de la calculadora, osea los numeros y demas*/
+      <div class="modal-bg" id="premiumModal">
+        <div class="modal">
+          <h3>Calculadora Premium</h3>
+          <p id="modalText">Para ver tu resultado completo, debes pagar $99.99 MXN.</p>
+          <button class="btn-pay">Pagar</button>
+          <button class="btn-cancel">Cancelar</button>
+          </div>
+          </div>
+          /*La pantalla emergente, modal es eso. Los botones son esos del cancelar y pagar, lo que permite moverte a otro*/
+          <div class="toast" id="toast"></div>
+          
