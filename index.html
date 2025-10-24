@@ -1,3 +1,259 @@
-
-<meta charset="UTF-8">
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Calculadora Premium</title>
+
+<style>
+/* === estilos de como se ve la mayoria === */
+body {
+  font-family: system-ui, sans-serif;
+  background: #0f1724;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+.calc {
+  width: 320px;
+  background: #1a2335;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+.result-box {
+  background: #60a5fa;
+  color: #0b1220;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 1.2rem;
+  display: none;
+  margin-bottom: 8px;
+  white-space: pre-line;
+}
+.display {
+  background: #0b1220;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  text-align: right;
+  font-size: 1.6rem;
+}
+.pad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+button {
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #28354d;
+  color: white;
+  cursor: pointer;
+}
+button:active { transform: scale(.97); }
+.op { background: #4b6cb7; }
+.eq { background: #60a5fa; color: #0b1220; font-weight: bold; }
+.restart { background: #22c55e; display: none; }
+.sqrt { background: #f97316; display: none; }
+
+/* === modal y toast, en si es como se va a ver la pantalla emergente (modal) y los mensajes motivacionales (toast) === */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  background: #fff;
+  color: #111;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  width: 280px;
+}
+.modal button {
+  margin: 8px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-pay { background: #3b82f6; color: white; }
+.btn-cancel { background: #ccc; }
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: none;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+  <div class="calc">
+    <div class="result-box" id="resultBox"></div>
+    <div class="display" id="display">0</div>
+    <div class="pad">
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="op">/</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button class="op">*</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="op">-</button>
+      <button>0</button>
+      <button>.</button>
+      <button class="eq">=</button>
+      <button class="op">+</button>
+      <button class="sqrt">√</button>
+      <button class="restart">Reiniciar</button>
+    </div>
+  </div>
+
+  <!-- Todo esto sirve como los botones de la calculadora, osea los numeros y demas -->
+
+  <div class="modal-bg" id="premiumModal">
+    <div class="modal">
+      <h3>Calculadora Premium</h3>
+      <p id="modalText">Para ver tu resultado completo, debes pagar $99.99 MXN.</p>
+      <button class="btn-pay">Pagar</button>
+      <button class="btn-cancel">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- La pantalla emergente, modal es eso. Los botones son esos del cancelar y pagar, lo que permite moverte a otro -->
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+const toast = document.getElementById("toast");
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.style.display = "block";
+  setTimeout(() => toast.style.display = "none", 2500);
+}
+
+let motivationInterval;
+function startMotivation() {
+  const msgs = [
+    "OMG, eres increible",
+    "Sigue desbloqueando funciones",
+    "Se mucho mejor que todos con esta calculadora, no seas del monton",
+    "Increible, ¿Verdad?, no cualquier calculadora te daría esto",
+    "Si pagas 1500 se desbloquea la opcion de potencia.",
+    "Por favor apóyanos para seguir mejorando :3",
+    "compra funciones, sherk, compra funciones",
+    "andale compra mas funciones,  ¿o ya se te acabo tu quincena?",
+    "jajajaja no le alcanza pa nuestra calculadora",
+    "compra mas nuestra cartera esta tan vcia que hasta las polillas se mudaron",
+    "si falla, reinicia o culpa al cache",
+    "ashh saquenlo no le alcanza ni pal chicle y quiere usar nuestra calculadora ._.",
+    "Tenemos hambre, alimentanos... :(",
+    "Cualquier mensaje de estos, los escribio Fatima, nos deslindamos de cualquier accion"
+  ];
+  motivationInterval = setInterval(() => {
+    const msg = msgs[Math.floor(Math.random() * msgs.length)];
+    showToast(msg);
+  }, 8000);
+} 
+
+
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll(".pad button");
+const modal = document.getElementById("premiumModal");
+const modalText = document.getElementById("modalText");
+const btnPay = modal.querySelector(".btn-pay");
+const btnCancel = modal.querySelector(".btn-cancel");
+const resultBox = document.getElementById("resultBox");
+const restartBtn = document.querySelector(".restart");
+const sqrtBtn = document.querySelector(".sqrt");
+
+let expr = "";
+let paid = false;
+let forcedPayment = false;
+
+// === Botones calculadora ===
+buttons.forEach(b => {
+  b.addEventListener("click", () => {
+    const val = b.textContent;
+    if(val === "="){
+      if(!paid){
+        if(forcedPayment){
+          modalText.textContent = "Ahora debes pagar 2 pesos extras, teniendo un total de $101 que pagar, no hay opción de cancelar.";
+          btnCancel.style.display = "none";
+        } else {
+          modalText.textContent = "Para ver tu resultado completo, debes pagar $99.99 MXN.";
+          btnCancel.style.display = "inline-block";
+        }
+        modal.style.display = "flex";
+      } else {
+        resultBox.textContent = "Hola mundo";
+        resultBox.style.display = "block";
+        setTimeout(()=>{
+          try {
+            let toEval = expr.replace(/√/g,"Math.sqrt");
+            const res = Function('"use strict";return (' + toEval + ')')();
+            resultBox.textContent = "" + res;
+            expr = res.toString();
+          } catch {
+            resultBox.textContent = "Error en operación";
+            expr = "";
+          }
+        }, 500);
+      }
+    } else if(val === "Reiniciar" && paid){
+      expr = "";
+      display.textContent = "0";
+      resultBox.style.display = "none";
+      restartBtn.style.display = "none";
+      showToast("Reiniciado correctamente. Paga $1500 para poder reiniciarlo nuevamente.");
+    } else if(val === "√" && paid){
+      expr += "√";
+      display.textContent = expr;
+    } else if(!["Reiniciar","√"].includes(val)){
+      expr += val;
+      display.textContent = expr;
+    }
+  });
+});
+
+// === Cancelar pago ===
+btnCancel.onclick = () => {
+  modal.style.display = "none";
+  forcedPayment = true; 
+};
+
+// === Pagar ===
+btnPay.onclick = () => {
+  modal.style.display = "none";
+  paid = true;
+  forcedPayment = false;
+  restartBtn.style.display = "inline-block";
+  sqrtBtn.style.display = "inline-block";
+  startMotivation();
+  
+
+</script>
+
+</body>
+</html>
