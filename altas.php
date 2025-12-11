@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Registro en la misma página</title>
+<title>ALTAS</title>
 
 <style>
     /* ESTILOS, UN MODAL DISTINTO PARA LA CALCULADORA */
