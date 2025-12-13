@@ -10,5 +10,10 @@ define("usuarios",array(
     "cuanta_bancaria":,
     "correo":,
     "pass":
+    "id" => "id",
+    "nombre"=> "nombre",
+    "cuanta_bancaria"=> "cuenta",
+    "correo" => "correo",
+    "pass" => "pass"
 ));
-?>
+?
